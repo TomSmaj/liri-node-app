@@ -12,7 +12,28 @@ var spotify = new Spotify(keys.spotify);
 var posInputs = ["concert-this", "spotify-this-song", "movie-this", "do-what-it-says"];
 
 function concertThis(){
-    
+    let artist = "";
+    if(args[1]){
+        artist = args[1];
+    }
+    else{
+        artist = "Mac Demarco";
+    }
+    let url = "https://rest.bandsintown.com/artists/" + artist + "/events?app_id=codingbootcamp";
+    request(url, (error, response, body) => {
+        outStr = JSON.parse(body);
+        //console.log(outStr);
+        console.log("Artist: " + artist);
+        writeToFile("Artist: " + artist);
+        for(let i = 0; i < outStr.length; i++){
+            console.log("\nVenue: " + outStr[i].venue.name);
+            writeToFile("Venue: " + outStr[i].venue.name);
+            console.log("Location: " + outStr[i].venue.city + ", " + outStr[i].venue.region);
+            writeToFile("Location: " + outStr[i].venue.city + ", " + outStr[i].venue.region);
+            console.log("Date: " + outStr[i].datetime + "\n");
+            writeToFile("Date: " + outStr[i].datetime);
+        }
+    });
 }
 
 function spotifyThis(){
